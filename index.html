@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Bilaa 💝</title>
+    <style>
+        :root {
+            --gb-pink-bg: #ffdef2;
+            --gb-pink-dark: #c2185b;
+            --case-color: #ffc1e3;
+            --button-red: #ff1744;
+        }
+
+        body {
+            background-color: #fff0f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ff85a2; z-index: 1000; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            color: white; cursor: pointer; text-align: center;
+        }
+
+        .gameboy {
+            background: var(--case-color); width: 320px; height: 580px;
+            border-radius: 10px 10px 60px 10px; box-shadow: 10px 10px 0px #f06292;
+            padding: 25px; position: relative; user-select: none;
+            border: 4px solid #f8bbd0;
+        }
+
+        .screen-border {
+            background: #5d4037; width: 275px; height: 245px; margin: 0 auto;
+            border-radius: 10px 10px 40px 10px; display: flex; justify-content: center; align-items: center;
+        }
+
+        .screen {
+            background: var(--gb-pink-bg); width: 220px; height: 190px;
+            border: 4px solid #333; overflow: hidden; position: relative; padding: 10px; color: var(--gb-pink-dark);
+            box-sizing: border-box;
+        }
+
+        .heart {
+            position: absolute; color: #ff1744; font-size: 12px;
+            user-select: none; pointer-events: none; animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(210px); } }
+
+        .load-bar { width: 140px; height: 15px; border: 2px solid var(--gb-pink-dark); padding: 2px; margin: 20px auto; }
+        .load-fill { height: 100%; background: var(--gb-pink-dark); width: 0%; transition: width 3s linear; }
+
+        .menu-item { cursor: pointer; padding: 6px; font-weight: bold; font-size: 11px; margin-bottom: 2px; }
+        .menu-item.active { background: var(--gb-pink-dark); color: white; border-radius: 4px; }
+
+        #gallery-display { height: 105px; background: white; border: 1px solid var(--gb-pink-dark); display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 5px; }
+        #gallery-display img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .gal-nav { display: flex; justify-content: space-between; margin-top: 8px; }
+        .gal-btn { background: var(--gb-pink-dark); color: white; border: none; padding: 4px 8px; cursor: pointer; font-size: 9px; border-radius: 3px; font-family: inherit; }
+
+        .controls { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .d-pad { display: grid; grid-template-areas: ". up ." "left . right" ". down ."; gap: 2px; }
+        .d-btn { width: 35px; height: 35px; background: #5d4037; border: none; cursor: pointer; color: white; border-radius: 4px; font-size: 14px;}
+        
+        .buttons-ab { display: flex; gap: 15px; transform: rotate(-15deg); }
+        .btn-circle { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--button-red); color: white; box-shadow: 2px 2px 0px #c2185b; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 16px;}
+
+        .spotify-btn {
+            background: #1DB954; color: white; border: none; padding: 8px 12px;
+            border-radius: 20px; font-size: 9px; font-weight: bold; cursor: pointer;
+            text-decoration: none; display: inline-block; margin-top: 8px;
+            box-shadow: 0px 2px 0px #14833b;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div id="start-overlay" onclick="mulaiSemuanya()">
+    <div style="font-size: 50px;">💝</div>
+    <h2 style="margin: 10px 0;">SPECIAL FOR BILAA</h2>
+    <p>TAP TO START</p>
+    <p style="font-size: 10px; opacity: 0.8;">Kahitna - Cinta Sudah Lewat</p>
+</div>
+
+<audio id="laguKahitna" loop>
+    <source src="https://docs.google.com/uc?export=download&id=124TKX37IVIn6RiRoU5yZKTzVmJI9cnay" type="audio/mpeg">
+</audio>
+
+<div class="gameboy">
+    <div class="screen-border">
+        <div class="screen" id="layar">
+            
+            <div id="loading">
+                <p style="text-align: center; font-size: 10px; margin-top: 40px; font-weight: bold;">PREPARING LOVE...</p>
+                <div class="load-bar"><div id="bar" class="load-fill"></div></div>
+            </div>
+
+            <div id="menu" class="hidden">
+                <p style="font-size: 10px; border-bottom: 2px solid var(--gb-pink-dark); margin-bottom: 8px; text-align: center; font-weight: bold; padding-bottom: 4px;">HAPPY VALENTINE ❤️</p>
+                <div class="menu-item active" data-target="msg">▶ LOVE LETTER</div>
+                <div class="menu-item" data-target="gal">▶ OUR PHOTOS</div>
+                <div class="menu-item" data-target="ply">▶ PLAYLIST</div>
+                <div class="menu-item" data-target="tet">▶ SPECIAL GIFT</div>
+            </div>
+
+            <div id="content-msg" class="hidden" style="text-align: center; line-height: 1.4;">
+                <p style="font-size: 10px; font-weight: bold; margin: 0 0 5px 0;">HELLO, BILAA.</p>
+                <div style="font-size: 8px; text-transform: none; text-align: left; background: rgba(255,255,255,0.4); padding: 8px; border-radius: 4px; max-height: 120px; overflow-y: auto;">
+                    Happy Valentine.<br><br>
+                    Makasih ya sudah hadir belakangan ini, dan juga udah mau aku repotin kesana kemari. Bisa kenal kamu itu salah satu hal baik yang aku syukuri tahun ini.<br><br>
+                    Cukup tahu kamu baik-baik saja dan bahagia, itu sudah bikin aku senang.<br><br>
+                    <i>Stay as wonderful as you are, Bilaa.</i>
+                </div>
+                <p style="font-size: 7px; margin-top: 6px; font-style: italic; opacity: 0.8;">— with care —</p>
+            </div>
+
+            <div id="content-gal" class="hidden">
+                <p id="gal-title" style="font-size: 9px; text-align: center; color: var(--gb-pink-dark); font-weight: bold; margin: 0 0 5px 0;"></p>
+                <div id="gallery-display"><img id="gal-img" src=""></div>
+                <div class="gal-nav">
+                    <button class="gal-btn" onclick="geserGal(-1)">PREV</button>
+                    <button class="gal-btn" onclick="geserGal(1)">NEXT</button>
+                </div>
+            </div>
+
+            <div id="content-ply" class="hidden" style="text-align: center; padding-top: 15px;">
+                <p style="font-size: 10px; font-weight: bold;">FOR YOUR EARS</p>
+                <div style="font-size: 30px; margin: 5px 0;">🎧</div>
+                <p style="font-size: 8px; text-transform: none; margin-bottom: 5px;">"Lagu-lagu yang bikin<br>aku inget Bilaa..."</p>
+                <a href="https://open.spotify.com/playlist/1KVRoPWKsm0jtwiAs0pgA8?si=B_YwxbfmRoKs7BG0Wc6SnQ&pi=hBiowqSdTByf-" target="_blank" class="spotify-btn">OPEN SPOTIFY</a>
+                <p style="font-size: 6px; margin-top: 8px; opacity: 0.7;">(Klik untuk buka aplikasi)</p>
+            </div>
+
+            <div id="content-tet" class="hidden" style="text-align: center;">
+                <p style="font-size: 10px; font-weight: bold; margin-bottom: 8px; color: #2e7d32;">🏆 LEVEL CLEAR!</p>
+                <div style="background: white; border: 2px dashed var(--gb-pink-dark); padding: 8px; border-radius: 8px;">
+                    <p style="font-size: 8px; font-weight: bold; margin: 0; color: #c2185b;">VALENTINE VOUCHER</p>
+                    <div style="font-size: 18px; margin: 4px 0;">🍦 + 🍵</div>
+                    <p style="font-size: 8px; text-transform: none; margin: 0; line-height: 1.2;">
+                        Berlaku untuk:<br>
+                        <b>1x Es Krim & 1x Matcha Latte</b>
+                    </p>
+                    <p style="font-size: 6px; text-transform: none; margin-top: 4px; color: #666; font-style: italic;">
+                        *Klaim via chat ke [Namamu]
+                    </p>
+                </div>
+                <p style="font-size: 7px; margin-top: 8px; text-transform: none; line-height: 1.2;">
+                    "Congrats Bilaa!<br>Screenshot buat tukerin ya."
+                </p>
+            </div>
+
+            <div id="closing" class="hidden">
+                <p style="text-align: center; font-size: 10px; margin-top: 40px; font-weight: bold;">SAVING MEMORIES...</p>
+                <div class="load-bar"><div id="bar-close" class="load-fill"></div></div>
+                <p id="final-msg" class="hidden" style="text-align: center; font-size: 9px; font-weight: bold; margin-top: 10px; color: #ff1744;">See you soon, Bilaa! ❤️</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="d-pad">
+            <button class="d-btn" style="grid-area: up" onclick="navigasi(-1)">▲</button>
+            <button class="d-btn" style="grid-area: left" onclick="geserGal(-1)">◀</button>
+            <button class="d-btn" style="grid-area: right" onclick="geserGal(1)">▶</button>
+            <button class="d-btn" style="grid-area: down" onclick="navigasi(1)">▼</button>
+        </div>
+        <div class="buttons-ab">
+            <button class="btn-circle" onclick="kembali()">B</button>
+            <button class="btn-circle" onclick="pilih()">A</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const audio = document.getElementById('laguKahitna');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const layar = document.getElementById('layar');
+    let indexMenu = 0;
+    let indexGal = 0;
+    
+    // Set untuk melacak menu apa saja yang sudah dibuka
+    let openedMenus = new Set();
+
+    const foto = [
+        {url: 'https://i.imgur.com/PokpQGd.jpeg', title: 'MOMENT #1'},
+        {url: 'https://i.imgur.com/nLXUCzq.jpeg', title: 'MOMENT #2'},
+        {url: 'https://i.imgur.com/60gXJWE.jpeg', title: 'MOMENT #3'},
+        {url: 'https://i.imgur.com/9XDsufY.jpeg', title: 'MOMENT #4'}
+    ];
+
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * (layar.offsetWidth - 20) + 'px';
+        heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        layar.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }
+
+    function mulaiSemuanya() {
+        document.getElementById('start-overlay').style.display = 'none';
+        audio.play().catch(e => console.log("Audio terblokir"));
+        document.getElementById('bar').style.width = '100%';
+        
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('menu').classList.remove('hidden');
+            setInterval(createHeart, 600);
+        }, 3200);
+    }
+
+    function navigasi(arah) {
+        if(!document.getElementById('menu').classList.contains('hidden')) {
+            indexMenu = (indexMenu + arah + menuItems.length) % menuItems.length;
+            menuItems.forEach((m, i) => m.classList.toggle('active', i === indexMenu));
+        }
+    }
+
+    function pilih() {
+        if(!document.getElementById('menu').classList.contains('hidden')) {
+            const target = menuItems[indexMenu].getAttribute('data-target');
+            openedMenus.add(target); // Catat menu yang dibuka
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('content-' + target).classList.remove('hidden');
+            if(target === 'gal') updateGal();
+        }
+    }
+
+    function kembali() {
+        // Cek apakah sedang di dalam konten
+        const activeContent = document.querySelector('[id^="content-"]:not(.hidden)');
+        
+        if (activeContent) {
+            activeContent.classList.add('hidden');
+
+            // Jika semua menu (4 menu) sudah pernah dibuka, tampilkan closing
+            if (openedMenus.size >= 4) {
+                tampilkanClosing();
+            } else {
+                document.getElementById('menu').classList.remove('hidden');
+            }
+        }
+    }
+
+    function tampilkanClosing() {
+        document.getElementById('menu').classList.add('hidden');
+        document.getElementById('closing').classList.remove('hidden');
+        
+        // Jalankan progress bar closing
+        setTimeout(() => {
+            document.getElementById('bar-close').style.width = '100%';
+        }, 100);
+
+        // Munculkan pesan final setelah loading selesai
+        setTimeout(() => {
+            document.getElementById('final-msg').classList.remove('hidden');
+        }, 3200);
+    }
+
+    function updateGal() {
+        document.getElementById('gal-title').innerText = foto[indexGal].title;
+        document.getElementById('gal-img').src = foto[indexGal].url;
+    }
+
+    function geserGal(arah) {
+        if(!document.getElementById('content-gal').classList.contains('hidden')) {
+            indexGal = (indexGal + arah + foto.length) % foto.length;
+            updateGal();
+        }
+    }
+</script>
+</body>
+</html>
