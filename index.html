@@ -91,9 +91,8 @@
     <p>TAP TO START</p>
     <p style="font-size: 10px; opacity: 0.8;">Kahitna - Cinta Sudah Lewat</p>
 </div>
-
-<audio id="laguKahitna" loop>
-    <source src="https://docs.google.com/uc?export=download&id=124TKX37IVIn6RiRoU5yZKTzVmJI9cnay" type="audio/mpeg">
+<audio id="laguUntilIFoundYou" loop preload="auto">
+    <source src="until-i-found-you.mp3" type="audio/mpeg">
 </audio>
 
 <div class="gameboy">
@@ -208,17 +207,32 @@
         layar.appendChild(heart);
         setTimeout(() => heart.remove(), 4000);
     }
-
     function mulaiSemuanya() {
-        document.getElementById('start-overlay').style.display = 'none';
-        audio.play().catch(e => console.log("Audio terblokir"));
-        document.getElementById('bar').style.width = '100%';
-        
-        setTimeout(() => {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('menu').classList.remove('hidden');
-            setInterval(createHeart, 600);
-        }, 3200);
+    const audio = document.getElementById('laguKahitna');
+    
+    // Sembunyikan overlay
+    document.getElementById('start-overlay').style.display = 'none';
+    
+    // Trik Unlock Audio untuk Browser HP
+    audio.play().then(() => {
+        console.log("Playback started successfully");
+    }).catch(error => {
+        console.log("Playback failed, trying workaround...");
+        // Jika gagal, coba lagi dengan interaksi global
+        window.addEventListener('touchstart', () => {
+            audio.play();
+        }, { once: true });
+    });
+
+    document.getElementById('bar').style.width = '100%';
+    
+    setTimeout(() => {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('menu').classList.remove('hidden');
+        setInterval(createHeart, 600);
+    }, 3200);
+}
+
     }
 
     function navigasi(arah) {
