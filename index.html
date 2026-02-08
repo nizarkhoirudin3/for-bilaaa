@@ -89,9 +89,10 @@
     <div style="font-size: 50px;">💝</div>
     <h2 style="margin: 10px 0;">SPECIAL FOR BILAA</h2>
     <p>TAP TO START</p>
-    <p style="font-size: 10px; opacity: 0.8;">Kahitna - Cinta Sudah Lewat</p>
+    <p style="font-size: 10px; opacity: 0.8;">Stephen Sanchez - Until I Found You</p>
 </div>
-<audio id="laguUntilIFoundYou" loop preload="auto">
+
+<audio id="laguUtama" loop preload="auto">
     <source src="until-i-found-you.mp3" type="audio/mpeg">
 </audio>
 
@@ -136,7 +137,7 @@
                 <p style="font-size: 10px; font-weight: bold;">FOR YOUR EARS</p>
                 <div style="font-size: 30px; margin: 5px 0;">🎧</div>
                 <p style="font-size: 8px; text-transform: none; margin-bottom: 5px;">"Lagu-lagu yang bikin<br>aku inget Bilaa..."</p>
-                <a href="https://open.spotify.com/playlist/1KVRoPWKsm0jtwiAs0pgA8?si=B_YwxbfmRoKs7BG0Wc6SnQ&pi=hBiowqSdTByf-" target="_blank" class="spotify-btn">OPEN SPOTIFY</a>
+                <a href="https://open.spotify.com/playlist/1KVRoPWKsm0jtwiAs0pgA8?si=PvI4UYbqRtS4E9lfFM9wCQ" target="_blank" class="spotify-btn">OPEN SPOTIFY</a>
                 <p style="font-size: 6px; margin-top: 8px; opacity: 0.7;">(Klik untuk buka aplikasi)</p>
             </div>
 
@@ -163,7 +164,6 @@
                 <div class="load-bar"><div id="bar-close" class="load-fill"></div></div>
                 <p id="final-msg" class="hidden" style="text-align: center; font-size: 9px; font-weight: bold; margin-top: 10px; color: #ff1744;">See you soon, Bilaa! ❤️</p>
             </div>
-
         </div>
     </div>
 
@@ -182,13 +182,11 @@
 </div>
 
 <script>
-    const audio = document.getElementById('laguKahitna');
+    const audio = document.getElementById('laguUtama'); // Ganti ID agar sinkron
     const menuItems = document.querySelectorAll('.menu-item');
     const layar = document.getElementById('layar');
     let indexMenu = 0;
     let indexGal = 0;
-    
-    // Set untuk melacak menu apa saja yang sudah dibuka
     let openedMenus = new Set();
 
     const foto = [
@@ -207,32 +205,25 @@
         layar.appendChild(heart);
         setTimeout(() => heart.remove(), 4000);
     }
+
     function mulaiSemuanya() {
-    const audio = document.getElementById('laguKahitna');
-    
-    // Sembunyikan overlay
-    document.getElementById('start-overlay').style.display = 'none';
-    
-    // Trik Unlock Audio untuk Browser HP
-    audio.play().then(() => {
-        console.log("Playback started successfully");
-    }).catch(error => {
-        console.log("Playback failed, trying workaround...");
-        // Jika gagal, coba lagi dengan interaksi global
-        window.addEventListener('touchstart', () => {
-            audio.play();
-        }, { once: true });
-    });
+        document.getElementById('start-overlay').style.display = 'none';
+        
+        // Memainkan audio
+        audio.play().then(() => {
+            console.log("Musik Jalan!");
+        }).catch(error => {
+            console.log("Gagal Autoplay, mencoba touchstart");
+            window.addEventListener('touchstart', () => { audio.play(); }, { once: true });
+        });
 
-    document.getElementById('bar').style.width = '100%';
-    
-    setTimeout(() => {
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('menu').classList.remove('hidden');
-        setInterval(createHeart, 600);
-    }, 3200);
-}
-
+        document.getElementById('bar').style.width = '100%';
+        
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('menu').classList.remove('hidden');
+            setInterval(createHeart, 600);
+        }, 3200);
     }
 
     function navigasi(arah) {
@@ -245,7 +236,7 @@
     function pilih() {
         if(!document.getElementById('menu').classList.contains('hidden')) {
             const target = menuItems[indexMenu].getAttribute('data-target');
-            openedMenus.add(target); // Catat menu yang dibuka
+            openedMenus.add(target);
             document.getElementById('menu').classList.add('hidden');
             document.getElementById('content-' + target).classList.remove('hidden');
             if(target === 'gal') updateGal();
@@ -253,13 +244,9 @@
     }
 
     function kembali() {
-        // Cek apakah sedang di dalam konten
         const activeContent = document.querySelector('[id^="content-"]:not(.hidden)');
-        
         if (activeContent) {
             activeContent.classList.add('hidden');
-
-            // Jika semua menu (4 menu) sudah pernah dibuka, tampilkan closing
             if (openedMenus.size >= 4) {
                 tampilkanClosing();
             } else {
@@ -271,13 +258,9 @@
     function tampilkanClosing() {
         document.getElementById('menu').classList.add('hidden');
         document.getElementById('closing').classList.remove('hidden');
-        
-        // Jalankan progress bar closing
         setTimeout(() => {
             document.getElementById('bar-close').style.width = '100%';
         }, 100);
-
-        // Munculkan pesan final setelah loading selesai
         setTimeout(() => {
             document.getElementById('final-msg').classList.remove('hidden');
         }, 3200);
