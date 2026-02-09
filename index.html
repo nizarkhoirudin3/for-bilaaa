@@ -10,6 +10,8 @@
             --gb-pink-dark: #c2185b;
             --case-color: #ffc1e3;
             --button-red: #ff1744;
+            /* Tambahan warna pink untuk glitch */
+            --accent-pink: #ff85a2;
         }
 
         body {
@@ -25,10 +27,25 @@
 
         #start-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ff85a2; z-index: 1000; display: flex;
+            background: #ff85a2; z-index: 2000; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             color: white; cursor: pointer; text-align: center;
         }
+
+        /* --- KODE BARU: GLITCH SCREEN STYLE --- */
+        #glitch-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a0a13; z-index: 1500; display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            color: var(--accent-pink); text-align: center; font-weight: bold;
+        }
+        .error-title { font-size: 20px; letter-spacing: 2px; margin-bottom: 20px; animation: blink-glitch 0.3s infinite; }
+        .error-bar { width: 250px; height: 20px; border: 2px solid var(--accent-pink); padding: 2px; }
+        .error-fill { height: 100%; background: var(--accent-pink); width: 0%; transition: width 0.1s; }
+        .error-msg { font-size: 10px; margin-top: 15px; color: #ffdef2; max-width: 80%; }
+        #btn-fix { margin-top: 20px; padding: 10px 20px; background: var(--accent-pink); color: white; border: none; font-family: inherit; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        @keyframes blink-glitch { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        /* -------------------------------------- */
 
         .gameboy {
             background: var(--case-color); width: 320px; height: 580px;
@@ -85,11 +102,20 @@
 </head>
 <body>
 
-<div id="start-overlay" onclick="mulaiSemuanya()">
+<div id="start-overlay" onclick="mulaiGlitch()">
     <div style="font-size: 50px;">💝</div>
     <h2 style="margin: 10px 0;">SPECIAL FOR BILAA</h2>
     <p>TAP TO START</p>
     <p style="font-size: 10px; opacity: 0.8;">Stephen Sanchez - Until I Found You</p>
+</div>
+
+<div id="glitch-screen">
+    <div id="error-content">
+        <div class="error-title" id="status-text">SYSTEM FAILURE: MEMORY FULL</div>
+        <div class="error-bar"><div class="error-fill" id="error-bar-fill"></div></div>
+        <div class="error-msg" id="error-msg">Memuat perasaan... 0%</div>
+    </div>
+    <button id="btn-fix" class="hidden" onclick="fixSystem()">Bersihkan Masa Lalu</button>
 </div>
 
 <audio id="laguUtama" loop preload="auto">
@@ -112,18 +138,18 @@
                 <div class="menu-item" data-target="ply">▶ PLAYLIST</div>
                 <div class="menu-item" data-target="tet">▶ SPECIAL GIFT</div>
             </div>
- <div id="content-msg" class="hidden" style="text-align: center; line-height: 1.5;">
-    <p style="font-size: 10px; font-weight: bold; margin: 0 0 5px 0;">HELLO, BILAA.</p>
-    <div style="font-size: 8.5px; text-transform: none; text-align: left; background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px; max-height: 130px; overflow-y: auto; color: #444;">
-        Happy Valentine, Bilaa.<br><br>
-        Makasih ya sudah hadir belakangan ini, dan juga sudah mau aku repotin kesana-kemari. Mungkin kedengarannya biasa, tapi aku cuma mau kamu tahu kalau bisa kenal kamu adalah salah satu hal terbaik yang aku syukuri tahun ini.<br><br>
-        Di tengah hari-hari yang kadang berisik, ngobrol sama kamu selalu jadi bagian paling tenang yang aku punya. Aku nggak butuh banyak alasan buat peduli sama kamu—cukup karena kamu itu 'kamu'.<br><br>
-        Nggak ada tuntutan apa-apa, aku cuma ingin kamu tahu kalau kamu sangat berharga, dan ada aku yang selalu senang melihat kamu bahagia. <br><br>
-        <i>Stay as wonderful as you are, Bilaa.</i>
-    </div>
-    <p style="font-size: 7px; margin-top: 8px; font-style: italic; opacity: 0.8;">— with sincere care, Nizarr —</p>
-</div>
-    
+
+            <div id="content-msg" class="hidden" style="text-align: center; line-height: 1.5;">
+                <p style="font-size: 10px; font-weight: bold; margin: 0 0 5px 0;">HELLO, BILAA.</p>
+                <div style="font-size: 8.5px; text-transform: none; text-align: left; background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px; max-height: 130px; overflow-y: auto; color: #444;">
+                    Happy Valentine, Bilaa.<br><br>
+                    Makasih ya sudah hadir belakangan ini, dan juga sudah mau aku repotin kesana-kemari. Mungkin kedengarannya biasa, tapi aku cuma mau kamu tahu kalau bisa kenal kamu adalah salah satu hal terbaik yang aku syukuri tahun ini.<br><br>
+                    Di tengah hari-hari yang kadang berisik, ngobrol sama kamu selalu jadi bagian paling tenang yang aku punya. Aku nggak butuh banyak alasan buat peduli sama kamu—cukup karena kamu itu 'kamu'.<br><br>
+                    Nggak ada tuntutan apa-apa, aku cuma ingin kamu tahu kalau kamu sangat berharga, dan ada aku yang selalu senang melihat kamu bahagia. <br><br>
+                    <i>Stay as wonderful as you are, Bilaa.</i>
+                </div>
+                <p style="font-size: 7px; margin-top: 8px; font-style: italic; opacity: 0.8;">— with sincere care, Nizarr —</p>
+            </div>
 
             <div id="content-gal" class="hidden">
                 <p id="gal-title" style="font-size: 9px; text-align: center; color: var(--gb-pink-dark); font-weight: bold; margin: 0 0 5px 0;"></p>
@@ -183,7 +209,7 @@
 </div>
 
 <script>
-    const audio = document.getElementById('laguUtama'); // Ganti ID agar sinkron
+    const audio = document.getElementById('laguUtama');
     const menuItems = document.querySelectorAll('.menu-item');
     const layar = document.getElementById('layar');
     let indexMenu = 0;
@@ -197,6 +223,35 @@
         {url: 'https://i.imgur.com/9XDsufY.jpeg', title: 'MOMENT #4'}
     ];
 
+    /* --- LOGIKA BARU: MULAI GLITCH DULU --- */
+    function mulaiGlitch() {
+        document.getElementById('start-overlay').style.display = 'none';
+        document.getElementById('glitch-screen').style.display = 'flex';
+        
+        let percent = 0;
+        let bar = document.getElementById('error-bar-fill');
+        let msg = document.getElementById('error-msg');
+        
+        let interval = setInterval(() => {
+            percent += Math.floor(Math.random() * 8) + 2;
+            if (percent >= 100) {
+                percent = 100;
+                clearInterval(interval);
+                document.getElementById('status-text').innerText = "CRITICAL ERROR!";
+                msg.innerText = "Hati penuh, harap bersihkan masa lalu untuk melanjutkan...";
+                document.getElementById('btn-fix').classList.remove('hidden');
+            }
+            bar.style.width = percent + "%";
+            if(percent < 100) msg.innerText = "Memuat perasaan... " + percent + "%";
+        }, 150);
+    }
+
+    function fixSystem() {
+        document.getElementById('glitch-screen').style.display = 'none';
+        mulaiSemuanya(); // Lanjut ke fungsi asli kamu
+    }
+    /* -------------------------------------- */
+
     function createHeart() {
         const heart = document.createElement('div');
         heart.innerHTML = '❤️';
@@ -208,8 +263,6 @@
     }
 
     function mulaiSemuanya() {
-        document.getElementById('start-overlay').style.display = 'none';
-        
         // Memainkan audio
         audio.play().then(() => {
             console.log("Musik Jalan!");
